@@ -30,8 +30,7 @@ public class GuestService {
     @Transactional
     public Guest update(Integer id, Guest updated) {
         Guest existing = findById(id);
-        existing.setFirstName(updated.getFirstName());
-        existing.setLastName(updated.getLastName());
+        existing.setName(updated.getName());
         existing.setPhone(updated.getPhone());
         existing.setEmail(updated.getEmail());
         existing.setInviteCode(updated.getInviteCode());
@@ -42,8 +41,7 @@ public class GuestService {
 
     @Transactional
     public Guest partialUpdate(Guest guest, Guest partial) {
-        if (partial.getFirstName() != null) guest.setFirstName(partial.getFirstName());
-        if (partial.getLastName() != null) guest.setLastName(partial.getLastName());
+        if (partial.getName() != null) guest.setName(partial.getName());
         if (partial.getPhone() != null) guest.setPhone(partial.getPhone());
         if (partial.getEmail() != null) guest.setEmail(partial.getEmail());
         if (partial.getInviteCode() != null) guest.setInviteCode(partial.getInviteCode());

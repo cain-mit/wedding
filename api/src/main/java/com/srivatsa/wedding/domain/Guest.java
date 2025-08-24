@@ -14,14 +14,10 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     private String phone;
-
     private String email;
 
     @Column(name = "invite_code", nullable = false, unique = true)
@@ -39,9 +35,11 @@ public class Guest {
     @OneToOne(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private GuestDetails details;
 
+    @Builder.Default
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventInvitation> invitations = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rsvp> rsvps = new ArrayList<>();
 }

@@ -6,8 +6,7 @@ import java.time.OffsetDateTime;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class GuestDto {
     private Integer id;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String phone;
     private String email;
     private String inviteCode;

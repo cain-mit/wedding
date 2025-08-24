@@ -26,8 +26,7 @@ public class RsvpController {
     @ResponseStatus(HttpStatus.OK)
     public RsvpFormResponse submit(@RequestBody RsvpFormRequest request) {
         Guest guestUpdates = Guest.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .name(request.getName())
                 .phone(request.getPhone())
                 .email(request.getEmail())
                 .lodgingName(request.getLodgingName())

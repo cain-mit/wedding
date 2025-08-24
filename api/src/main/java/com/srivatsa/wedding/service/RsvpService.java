@@ -53,10 +53,8 @@ public class RsvpService {
     public RsvpFormResult respondWithGuestUpdate(Integer eventId, String inviteCode, String status, String dietary, String comment, Guest guestUpdates, GuestDetails detailsUpdates) {
         Event event = eventRepo.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
         Guest guest = guestRepo.findByInviteCode(inviteCode).orElseThrow(() -> new NotFoundException("Guest not found"));
-        // apply guest partial updates
         if (guestUpdates != null) {
-            if (guestUpdates.getFirstName() != null) guest.setFirstName(guestUpdates.getFirstName());
-            if (guestUpdates.getLastName() != null) guest.setLastName(guestUpdates.getLastName());
+            if (guestUpdates.getName() != null) guest.setName(guestUpdates.getName());
             if (guestUpdates.getPhone() != null) guest.setPhone(guestUpdates.getPhone());
             if (guestUpdates.getEmail() != null) guest.setEmail(guestUpdates.getEmail());
             if (guestUpdates.getLodgingName() != null) guest.setLodgingName(guestUpdates.getLodgingName());
@@ -101,8 +99,7 @@ public class RsvpService {
     public RsvpFormMultiResult respondForMultiple(Integer[] eventIds, String inviteCode, Map<Integer,String> statuses, String dietary, String comment, Guest guestUpdates, GuestDetails detailsUpdates) {
         Guest guest = guestRepo.findByInviteCode(inviteCode).orElseThrow(() -> new NotFoundException("Guest not found"));
         if (guestUpdates != null) {
-            if (guestUpdates.getFirstName() != null) guest.setFirstName(guestUpdates.getFirstName());
-            if (guestUpdates.getLastName() != null) guest.setLastName(guestUpdates.getLastName());
+            if (guestUpdates.getName() != null) guest.setName(guestUpdates.getName());
             if (guestUpdates.getPhone() != null) guest.setPhone(guestUpdates.getPhone());
             if (guestUpdates.getEmail() != null) guest.setEmail(guestUpdates.getEmail());
             if (guestUpdates.getLodgingName() != null) guest.setLodgingName(guestUpdates.getLodgingName());

@@ -13,8 +13,7 @@ public class RsvpFormRequest {
     private String comment; // applied to all
 
     // guest updates
-    private String firstName;
-    private String lastName;
+    private String name;
     private String phone;
     private String email;
     private String lodgingName;
