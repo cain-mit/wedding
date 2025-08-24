@@ -142,4 +142,10 @@ public class RsvpService {
         }
         return new RsvpFormMultiResult(guest, guest.getDetails(), rsvps);
     }
+
+    public RsvpFormMultiResult getForm(String inviteCode) {
+        Guest guest = guestRepo.findByInviteCode(inviteCode).orElseThrow(() -> new NotFoundException("Guest not found"));
+        List<Rsvp> rsvps = guest.getRsvps();
+        return new RsvpFormMultiResult(guest, guest.getDetails(), rsvps);
+    }
 }

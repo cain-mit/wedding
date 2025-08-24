@@ -22,6 +22,16 @@ public class RsvpController {
         this.mapper = mapper;
     }
 
+    @GetMapping("/{inviteCode}")
+    public RsvpFormResponse preload(@PathVariable String inviteCode) {
+        var result = service.getForm(inviteCode);
+        return RsvpFormResponse.builder()
+                .guest(mapper.toDto(result.guest()))
+                .guestDetails(result.details() == null ? null : mapper.toDto(result.details()))
+                .rsvps(result.rsvps().stream().map(mapper::toDto).collect(Collectors.toList()))
+                .build();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public RsvpFormResponse submit(@RequestBody RsvpFormRequest request) {
