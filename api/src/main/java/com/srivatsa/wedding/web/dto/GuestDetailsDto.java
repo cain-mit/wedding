@@ -1,0 +1,19 @@
+package com.srivatsa.wedding.web.dto;
+
+import lombok.*;
+import java.time.OffsetDateTime;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class GuestDetailsDto {
+    private Integer guestId;
+    private OffsetDateTime arrivalTs;
+    private OffsetDateTime departureTs;
+    private String arrivalMethod;
+    private String departureMethod;
+    private String arrivalFlightNumber;
+    private String departureFlightNumber;
+    private String arrivalAirport;
+    private String departureAirport;
+    private String notes;
+    private OffsetDateTime updatedAt;
+}
