@@ -1,10 +1,11 @@
 # Build stage
-FROM eclipse-temurin:21-jdk AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
+# Maven settings (Artifactory mirror)
+COPY settings.xml /root/.m2/settings.xml
 COPY pom.xml .
-RUN --mount=type=cache,target=/root/.m2 mvn -q -e -DskipTests dependency:go-offline
 COPY src ./src
-RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests package
+RUN mvn -B -DskipTests package
 
 # Run stage
 FROM eclipse-temurin:21-jre

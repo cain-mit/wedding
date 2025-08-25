@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  wedding-api:
+    image: cain101/wedding-api:latest
+    container_name: wedding-api
+    restart: unless-stopped
+    ports:
+      - "31091:8080"
+    environment:
+      # Example Spring datasource settings (adjust)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://0.0.0.0:5432/wedding
+      SPRING_DATASOURCE_USERNAME: dummy
+      SPRING_DATASOURCE_PASSWORD: password
+      JAVA_OPTS: -Xms256m -Xmx512m
+    # If you later add a network / db service, declare depends_on
+    # depends_on:
+    #   - postgres
+
+# NOTE: Docker registry credentials (username/password) are NOT stored in compose.
+# Run this once before `docker compose up` to authenticate:
+#   echo "xyz" | docker login -u cain101 --password-stdin
+# Then start:
+#   docker compose up -d
