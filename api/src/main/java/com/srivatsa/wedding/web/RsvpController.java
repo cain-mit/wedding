@@ -3,8 +3,8 @@ package com.srivatsa.wedding.web;
 import com.srivatsa.wedding.domain.Guest;
 import com.srivatsa.wedding.domain.GuestDetails;
 import com.srivatsa.wedding.service.RsvpService;
-import com.srivatsa.wedding.web.dto.*;
-import com.srivatsa.wedding.web.mapper.EntityMapper;
+import com.srivatsa.wedding.web.dto.RsvpFormRequest;
+import com.srivatsa.wedding.web.dto.RsvpFormResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,20 +15,18 @@ import java.util.stream.Collectors;
 public class RsvpController {
 
     private final RsvpService service;
-    private final EntityMapper mapper;
 
-    public RsvpController(RsvpService service, EntityMapper mapper) {
+    public RsvpController(RsvpService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     @GetMapping("/{inviteCode}")
     public RsvpFormResponse preload(@PathVariable String inviteCode) {
         var result = service.getForm(inviteCode);
         return RsvpFormResponse.builder()
-                .guest(mapper.toDto(result.guest()))
-                .guestDetails(result.details() == null ? null : mapper.toDto(result.details()))
-                .rsvps(result.rsvps().stream().map(mapper::toDto).collect(Collectors.toList()))
+                .guest(result.guest())
+                .guestDetails(result.details())
+                .rsvps(result.rsvps().stream().collect(Collectors.toList()))
                 .build();
     }
 
@@ -61,9 +59,9 @@ public class RsvpController {
                 guestUpdates,
                 detailsUpdates);
         return RsvpFormResponse.builder()
-                .guest(mapper.toDto(result.guest()))
-                .guestDetails(result.details() == null ? null : mapper.toDto(result.details()))
-                .rsvps(result.rsvps().stream().map(mapper::toDto).collect(Collectors.toList()))
+                .guest(result.guest())
+                .guestDetails(result.details())
+                .rsvps(result.rsvps().stream().collect(Collectors.toList()))
                 .build();
     }
 }

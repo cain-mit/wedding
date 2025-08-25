@@ -2,8 +2,6 @@ package com.srivatsa.wedding.web;
 
 import com.srivatsa.wedding.domain.Event;
 import com.srivatsa.wedding.service.EventService;
-import com.srivatsa.wedding.web.dto.EventDto;
-import com.srivatsa.wedding.web.mapper.EntityMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,27 +12,25 @@ import java.util.List;
 public class EventController {
 
     private final EventService service;
-    private final EntityMapper mapper;
 
-    public EventController(EventService service, EntityMapper mapper) {
+    public EventController(EventService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     @GetMapping
-    public List<EventDto> list() {
-        return service.findAll().stream().map(mapper::toDto).toList();
+    public List<Event> list() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public EventDto get(@PathVariable Integer id) { return mapper.toDto(service.findById(id)); }
+    public Event get(@PathVariable Integer id) { return service.findById(id); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDto create(@RequestBody EventDto dto) { return mapper.toDto(service.create(mapper.toEntity(dto))); }
+    public Event create(@RequestBody Event event) { return service.create(event); }
 
     @PutMapping("/{id}")
-    public EventDto update(@PathVariable Integer id, @RequestBody EventDto dto) { return mapper.toDto(service.update(id, mapper.toEntity(dto))); }
+    public Event update(@PathVariable Integer id, @RequestBody Event event) { return service.update(id, event); }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -1,11 +1,14 @@
 package com.srivatsa.wedding.web.dto;
 
+import com.srivatsa.wedding.domain.Guest;
+import com.srivatsa.wedding.domain.GuestDetails;
+import com.srivatsa.wedding.domain.Rsvp;
 import lombok.*;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class RsvpFormResponse {
-    private GuestDto guest;
-    private GuestDetailsDto guestDetails;
-    private List<RsvpDto> rsvps;
+    private Guest guest;
+    private GuestDetails guestDetails;
+    private List<Rsvp> rsvps;
 }
