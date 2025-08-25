@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/invitations")
@@ -23,5 +24,17 @@ public class InvitationController {
     @ResponseStatus(HttpStatus.CREATED)
     public List<EventInvitation> create(@RequestBody CreateInvitationRequest request) {
         return service.createInvitations(request.name(), request.phone(), request.eventIds());
+    }
+
+    @PostMapping("/bulk")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<EventInvitation> bulkCreate(@RequestBody List<CreateInvitationRequest> requests) {
+        List<EventInvitation> all = new ArrayList<>();
+        if (requests != null) {
+            for (CreateInvitationRequest r : requests) {
+                all.addAll(service.createInvitations(r.name(), r.phone(), r.eventIds()));
+            }
+        }
+        return all;
     }
 }
