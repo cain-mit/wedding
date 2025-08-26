@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    image: cain101/wedding-web:latest
+    container_name: wedding-web
+    ports:
+      - "31092:31092"
+    environment:
+      - NODE_ENV=production
+      - PORT=31092
+      - HOSTNAME=0.0.0.0
+    restart: unless-stopped
+    networks:
+      - wedding-network
+    # If you need to override the API endpoint, uncomment and modify this
+    # environment:
+    #   - NEXT_PUBLIC_API_URL=http://192.168.50.5:31091
+
+networks:
+  wedding-network:
+    name: wedding-network
+    driver: bridge
