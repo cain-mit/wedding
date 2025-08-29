@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "guests")
@@ -32,13 +33,16 @@ public class Guest {
     @Column(name = "lodging_name")
     private String lodgingName;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private GuestDetails details;
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventInvitation> invitations = new ArrayList<>();
 
+    @JsonIgnore
     @Builder.Default
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rsvp> rsvps = new ArrayList<>();

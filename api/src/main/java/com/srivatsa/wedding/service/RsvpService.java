@@ -93,7 +93,9 @@ public class RsvpService {
         return new RsvpFormResult(guest, guest.getDetails(), rsvp);
     }
 
-    public record RsvpFormMultiResult(Guest guest, GuestDetails details, List<Rsvp> rsvps) {}
+    public record EventRsvpInfo(Integer eventId, String eventName, java.time.OffsetDateTime eventStartTs, String rsvpStatus, String dietary, String comment, java.time.OffsetDateTime respondedAt) {}
+
+    public record RsvpFormMultiResult(Guest guest, GuestDetails details, List<EventRsvpInfo> events) {}
 
     @Transactional
     public RsvpFormMultiResult respondForMultiple(Integer[] eventIds, String inviteCode, Map<Integer,String> statuses, String dietary, String comment, Guest guestUpdates, GuestDetails detailsUpdates) {
@@ -140,12 +142,38 @@ public class RsvpService {
             }).orElseGet(() -> repo.save(Rsvp.builder().event(event).guest(guest).status(status).dietary(dietary).comment(comment).respondedAt(now).build()));
             rsvps.add(rsvp);
         }
-        return new RsvpFormMultiResult(guest, guest.getDetails(), rsvps);
+        
+        // Return updated form data by calling getForm
+        return getForm(guest.getInviteCode());
     }
 
     public RsvpFormMultiResult getForm(String inviteCode) {
         Guest guest = guestRepo.findByInviteCode(inviteCode).orElseThrow(() -> new NotFoundException("Guest not found"));
-        List<Rsvp> rsvps = guest.getRsvps();
-        return new RsvpFormMultiResult(guest, guest.getDetails(), rsvps);
+        
+        // Get all events the guest is invited to
+        List<EventInvitation> invitations = invitationRepo.findByGuest(guest);
+        
+        // Get all RSVPs for the guest
+        List<Rsvp> rsvps = repo.findByGuest(guest);
+        Map<Integer, Rsvp> rsvpMap = rsvps.stream().collect(java.util.stream.Collectors.toMap(r -> r.getEvent().getId(), r -> r));
+        
+        // Build EventRsvpInfo list
+        List<EventRsvpInfo> events = invitations.stream()
+                .map(invitation -> {
+                    Event event = invitation.getEvent();
+                    Rsvp rsvp = rsvpMap.get(event.getId());
+                    return new EventRsvpInfo(
+                        event.getId(),
+                        event.getName(),
+                        event.getStartTs(),
+                        rsvp != null ? rsvp.getStatus() : null,
+                        rsvp != null ? rsvp.getDietary() : null,
+                        rsvp != null ? rsvp.getComment() : null,
+                        rsvp != null ? rsvp.getRespondedAt() : null
+                    );
+                })
+                .collect(java.util.stream.Collectors.toList());
+        
+        return new RsvpFormMultiResult(guest, guest.getDetails(), events);
     }
 }

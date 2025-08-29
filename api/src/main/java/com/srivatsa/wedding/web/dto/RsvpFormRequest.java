@@ -9,14 +9,6 @@ import java.util.Map;
 public class RsvpFormRequest {
     private String inviteCode; // required
     private Map<Integer, String> eventStatuses; // eventId -> yes/no/maybe
-    private String dietary; // applied to all
-    private String comment; // applied to all
-
-    // guest updates
-    private String name;
-    private String phone;
-    private String email;
-    private String lodgingName;
 
     // guest details updates
     private OffsetDateTime arrivalTs;

@@ -2,7 +2,6 @@ package com.srivatsa.wedding.web.dto;
 
 import com.srivatsa.wedding.domain.Guest;
 import com.srivatsa.wedding.domain.GuestDetails;
-import com.srivatsa.wedding.domain.Rsvp;
 import lombok.*;
 import java.util.List;
 
@@ -10,5 +9,5 @@ import java.util.List;
 public class RsvpFormResponse {
     private Guest guest;
     private GuestDetails guestDetails;
-    private List<Rsvp> rsvps;
+    private List<EventRsvpDto> events;
 }
